@@ -1,4 +1,4 @@
-#include "lsm6dsv16x-config_types.hpp"
+#include "config/lsm6dsv16x-config_types.hpp"
 
 namespace lsm6dsv16x
 {
@@ -20,7 +20,7 @@ namespace lsm6dsv16x
                "}";
     }
 
-    static const char *PinCtrlRegister::to_string(IbhrPorEn v)
+    const  char *PinCtrlRegister::to_string(IbhrPorEn v)
     {
         switch (v)
         {
@@ -261,7 +261,7 @@ namespace lsm6dsv16x
                "}";
     }
 
-    static char *CounterBdrRegister::to_string(TrigCounterBdr v)
+    const char *CounterBdrRegister::to_string(TrigCounterBdr v)
     {
         switch (v)
         {
@@ -292,30 +292,30 @@ namespace lsm6dsv16x
 
     void IntCtrlRegister::log() const
     {
-        ESP_LOGI(TAG, "raw=0x%04X " raw_)
+        ESP_LOGI(TAG, "raw=0x%04X ");
         ESP_LOGI(TAG, "cnt_bdr=%d fifo_full=%d fifo_ovr=%d fifo_th=%d drdy_g=%d drdy_xl=%d",
-                 cnt_bdr(), fifo_full(), fifo_ovr(), fifo_th(), drdy_g(), drdy_xl());
+                 int1_cnt_bdr(), int1_fifo_full(), int1_fifo_ovr(), int1_fifo_th(), int1_drdy_g(), int1_drdy_xl());
         ESP_LOGI(TAG, "emb_func_endop=%d cnt_bdr=%d fifo_full=%d fifo_ovr=%d fifo_th=%d drdy_g_eis=%d drdy_g=%d drdy_xl=%d",
-                 emb_func_endop(), cnt_bdr(), fifo_full(), fifo_ovr(), fifo_th(), drdy_g_eis(), drdy_g(), drdy_xl());
+                 int2_emb_func_endop(), int2_cnt_bdr(), int2_fifo_full(), int2_fifo_ovr(), int2_fifo_th(), int2_drdy_g_eis(), int2_drdy_g(), int2_drdy_xl());
     }
 
     std::string IntCtrlRegister::to_json() const
     {
         return std::string("{") +
-               "\"cnt_bdr\":" + (cnt_bdr() ? "true" : "false") + "," +
-               "\"fifo_full\":" + (fifo_full() ? "true" : "false") + "," +
-               "\"fifo_ovr\":" + (fifo_ovr() ? "true" : "false") + "," +
-               "\"fifo_th\":" + (fifo_th() ? "true" : "false") + "," +
-               "\"drdy_g\":" + (drdy_g() ? "true" : "false") + "," +
-               "\"drdy_xl\":" + (drdy_xl() ? "true" : "false") + "," +
-               "\"emb_func_endop\":" + (emb_func_endop() ? "true" : "false") + "," +
-               "\"cnt_bdr\":" + (cnt_bdr() ? "true" : "false") + "," +
-               "\"fifo_full\":" + (fifo_full() ? "true" : "false") + "," +
-               "\"fifo_ovr\":" + (fifo_ovr() ? "true" : "false") + "," +
-               "\"fifo_th\":" + (fifo_th() ? "true" : "false") + "," +
-               "\"drdy_g_eis\":" + (drdy_g_eis() ? "true" : "false") + "," +
-               "\"drdy_g\":" + (drdy_g() ? "true" : "false") + "," +
-               "\"drdy_xl\":" + (drdy_xl() ? "true" : "false") +
+               "\"cnt_bdr\":" + (int1_cnt_bdr() ? "true" : "false") + "," +
+               "\"fifo_full\":" + (int1_fifo_full() ? "true" : "false") + "," +
+               "\"fifo_ovr\":" + (int1_fifo_ovr() ? "true" : "false") + "," +
+               "\"fifo_th\":" + (int1_fifo_th() ? "true" : "false") + "," +
+               "\"drdy_g\":" + (int1_drdy_g() ? "true" : "false") + "," +
+               "\"drdy_xl\":" + (int1_drdy_xl() ? "true" : "false") + "," +
+               "\"emb_func_endop\":" + (int2_emb_func_endop() ? "true" : "false") + "," +
+               "\"cnt_bdr\":" + (int2_cnt_bdr() ? "true" : "false") + "," +
+               "\"fifo_full\":" + (int2_fifo_full() ? "true" : "false") + "," +
+               "\"fifo_ovr\":" + (int2_fifo_ovr() ? "true" : "false") + "," +
+               "\"fifo_th\":" + (int2_fifo_th() ? "true" : "false") + "," +
+               "\"drdy_g_eis\":" + (int2_drdy_g_eis() ? "true" : "false") + "," +
+               "\"drdy_g\":" + (int2_drdy_g() ? "true" : "false") + "," +
+               "\"drdy_xl\":" + (int2_drdy_xl() ? "true" : "false") +
                "}";
     }
 

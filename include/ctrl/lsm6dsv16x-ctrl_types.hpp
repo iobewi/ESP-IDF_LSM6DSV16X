@@ -8,11 +8,9 @@
 
 namespace lsm6dsv16x
 {
-    class Ctrl1Register
-    {
-    public:
-        static constexpr uint8_t reg_addr = 0x10;
 
+    DEFINE_GENERIC_REGISTER_ADDR(Ctrl1Register, uint8_t, 0x10)
+        public:
             enum class OpMode : uint8_t
             {
                 HIGH_PERFORMANCE = 0b000,
@@ -43,34 +41,22 @@ namespace lsm6dsv16x
                 RESERVED = 0b1101
             };
 
+            // Setters
+            void odr_xl(Odr v) { set_field<0, 0, 4>(v); }
+            void op_mode_xl(OpMode v) { set_field<0, 4, 3>(v); }
 
+            // Getters
+            Odr odr_xl() const { return get_field<0, 0, 4, Odr>(); }
+            OpMode op_mode_xl() const { return get_field<0, 4, 3, OpMode>(); }
+
+        private:
+            inline static const char *TAG = "LSM6DSV16X_CTRL1";
             static const char *to_string(Odr odr);
             static const char *to_string(OpMode mode);
+    END_REGISTER
 
-        // Setters
-        void odr_xl(Odr v)     { raw_ = (raw_ & 0xF0) | (static_cast<uint8_t>(v) & 0x0F); }
-        void op_mode_xl(OpMode v) { raw_ = (raw_ & 0x8F) | ((static_cast<uint8_t>(v) & 0x07) << 4); }
-
-        // Getters
-        Odr odr_xl() const     { return static_cast<Odr>(raw_ & 0x0F); }
-        OpMode op_mode_xl() const { return static_cast<OpMode>((raw_ >> 4) & 0x07); }
-
-        void set_raw(uint8_t raw) { raw_ = raw; }
-        uint8_t get_raw() const { return raw_; }
-
-        void log() const;
-        std::string to_json() const;
-
-    private:
-        inline static const char *TAG = "LSM6DSV16X_CTRL1";
-        uint8_t raw_ = 0;
-    };
-
-    class Ctrl2Register
-    {
-    public:
-        static constexpr uint8_t reg_addr = 0x11;
-
+    DEFINE_GENERIC_REGISTER_ADDR(Ctrl2Register, uint8_t, 0x11)
+        public:
             enum class OpMode : uint8_t
             {
                 HIGH_PERFORMANCE = 0b000,
@@ -100,127 +86,85 @@ namespace lsm6dsv16x
                 RESERVED = 0b1100,
             };
 
+            // Setters
+            void odr_g(Odr v) { set_field<0, 0, 4>(v); }
+            void op_mode_g(OpMode v) { set_field<0, 4, 3>(v); }
+
+            // Getters
+            Odr odr_g() const { return get_field<0, 0, 4, Odr>(); }
+            OpMode op_mode_g() const { return get_field<0, 4, 3, OpMode>(); }
+
+        private:
+            inline static const char *TAG = "LSM6DSV16X_CTRL2";
             static const char *to_string(Odr odr);
             static const char *to_string(OpMode mode);
 
-        // Setters
-        void odr_g(Odr v)      { raw_ = (raw_ & 0xF0) | (static_cast<uint8_t>(v) & 0x0F); }
-        void op_mode_g(OpMode v) { raw_ = (raw_ & 0x8F) | ((static_cast<uint8_t>(v) & 0x07) << 4); }
+    END_REGISTER
 
-        // Getters
-        Odr odr_g() const      { return static_cast<Odr>(raw_ & 0x0F); }
-        OpMode op_mode_g() const { return static_cast<OpMode>((raw_ >> 4) & 0x07); }
+    DEFINE_GENERIC_REGISTER_ADDR(Ctrl3Register, uint8_t, 0x12)
+        public:
+            // Setters
+            void boot(bool v) { set_flag<0, 7>(v); }
+            void bdu(bool v) { set_flag<0, 6>(v); }
+            void if_inc(bool v) { set_flag<0, 2>(v); }
+            void sw_reset(bool v) { set_flag<0, 0>(v); }
 
+            // Getters
+            bool boot() const { return get_flag<0, 7>(); }
+            bool bdu() const { return get_flag<0, 6>(); }
+            bool if_inc() const { return get_flag<0, 2>(); }
+            bool sw_reset() const { return get_flag<0, 0>(); }
 
-        void set_raw(uint8_t raw) { raw_ = raw; }
-        uint8_t get_raw() const { return raw_; }
+        private:
+            inline static const char *TAG = "LSM6DSV16X_CTRL3";
+            END_REGISTER
 
-        void log() const;
-        std::string to_json() const;
+            DEFINE_GENERIC_REGISTER_ADDR(Ctrl4Register, uint8_t, 0x13)
+        public:
+            // Setters
+            void int2_on_int1(bool v) { set_flag<0, 4>(v); }
+            void drdy_mask(bool v) { set_flag<0, 3>(v); }
+            void int2_drdy_temp(bool v) { set_flag<0, 2>(v); }
+            void drdy_pulsed(bool v) { set_flag<0, 1>(v); }
+            void int2_in_lh(bool v) { set_flag<0, 0>(v); }
 
-    private:
-        inline static const char *TAG = "LSM6DSV16X_CTRL2";
-        uint8_t raw_ = 0;
-    };
+            // Getters
+            bool int2_on_int1() const { return get_flag<0, 4>(); }
+            bool drdy_mask() const { return get_flag<0, 3>(); }
+            bool int2_drdy_temp() const { return get_flag<0, 2>(); }
+            bool drdy_pulsed() const { return get_flag<0, 1>(); }
+            bool int2_in_lh() const { return get_flag<0, 0>(); }
 
-    class Ctrl3Register : protected RegisterBase
-    {
-    public:
-        static constexpr uint8_t reg_addr = 0x12;
+        private:
+            inline static const char *TAG = "LSM6DSV16X_CTRL4";
+    END_REGISTER
 
-        // Setters
-        void boot(bool v)       { set_bit(7, v, raw_); }
-        void bdu(bool v)        { set_bit(6, v, raw_); }
-        void if_inc(bool v)     { set_bit(2, v, raw_); }
-        void sw_reset(bool v)   { set_bit(0, v, raw_); }
+    DEFINE_GENERIC_REGISTER_ADDR(Ctrl5Register, uint8_t, 0x14)
+        public:
+            enum class BusActSel : uint8_t
+            {
+                US_2 = 0b00,
+                US_50 = 0b01,
+                MS_1 = 0b10,
+                MS_25 = 0b11,
+            };
 
-        // Getters
-        bool boot() const       { return get_bit(7, raw_); }
-        bool bdu() const        { return get_bit(6, raw_); }
-        bool if_inc() const     { return get_bit(2, raw_); }
-        bool sw_reset() const   { return get_bit(0, raw_); }
+            // Setters
+            void bus_act_sel(BusActSel v) { set_field<0, 0, 2>(v); }
+            void int_en_i3c(bool v) { set_flag<0, 7>(v); }
 
-        void set_raw(uint8_t raw) { raw_ = raw; }
-        uint8_t get_raw() const { return raw_; }
+            // Getters
+            BusActSel bus_act_sel() const { return get_field<0, 0, 2, BusActSel>(); }
+            bool int_en_i3c() const { return get_flag<0, 7>(); }
 
-        void log() const;
-        std::string to_json() const;
+        private:
+            inline static const char *TAG = "LSM6DSV16X_CTRL5";
+            static const char *to_string(BusActSel v);
 
-    private:
-        inline static const char *TAG = "LSM6DSV16X_CTRL3";
-        uint8_t raw_ = 0;
-    };
+    END_REGISTER
 
-   class Ctrl4Register : protected RegisterBase
-{
-public:
-    static constexpr uint8_t reg_addr = 0x13;
-
-    // Setters
-    void int2_on_int1(bool v)    { set_bit(4, v, raw_); }
-    void drdy_mask(bool v)       { set_bit(3, v, raw_); }
-    void int2_drdy_temp(bool v)  { set_bit(2, v, raw_); }
-    void drdy_pulsed(bool v)     { set_bit(1, v, raw_); }
-    void int2_in_lh(bool v)      { set_bit(0, v, raw_); }
-
-    // Getters
-    bool int2_on_int1() const    { return get_bit(4, raw_); }
-    bool drdy_mask() const       { return get_bit(3, raw_); }
-    bool int2_drdy_temp() const  { return get_bit(2, raw_); }
-    bool drdy_pulsed() const     { return get_bit(1, raw_); }
-    bool int2_in_lh() const      { return get_bit(0, raw_); }
-
-    // Raw access
-    void set_raw(uint8_t raw) { raw_ = raw; }
-    uint8_t get_raw() const   { return raw_; }
-
-    void log() const;
-    std::string to_json() const;
-
-private:
-    uint8_t raw_ = 0;
-    inline static const char* TAG = "LSM6DSV16X_CTRL4";
-};
-
-class Ctrl5Register : protected RegisterBase
-{
-public:
-    static constexpr uint8_t reg_addr = 0x14;
-
-    enum class BusActSel : uint8_t
-    {
-        US_2  = 0b00,
-        US_50 = 0b01,
-        MS_1  = 0b10,
-        MS_25 = 0b11,
-    };
-    static const char* to_string(BusActSel v);
-
-    // Setters
-    void bus_act_sel(BusActSel v)  { raw_ = (raw_ & ~0x03) | (static_cast<uint8_t>(v) & 0x03); }
-    void int_en_i3c(bool v)        { set_bit(7, v, raw_); }
-
-    // Getters
-    BusActSel bus_act_sel() const  { return static_cast<BusActSel>(raw_ & 0x03); }
-    bool int_en_i3c() const        { return get_bit(7, raw_); }
-
-    // Raw access
-    void set_raw(uint8_t raw)      { raw_ = raw; }
-    uint8_t get_raw() const        { return raw_; }
-
-    void log() const;
-    std::string to_json() const;
-
-private:
-    uint8_t raw_ = 0;
-    inline static const char* TAG = "LSM6DSV16X_CTRL5";
-};
-
-    class Ctrl6Register
-    {
-    public:
-        static constexpr uint8_t reg_addr = 0x15;
-
+    DEFINE_GENERIC_REGISTER_ADDR(Ctrl6Register, uint8_t, 0x15)
+        public:
             enum class Lpf1GBw : uint8_t
             {
                 BW_0 = 0b000,
@@ -244,204 +188,151 @@ private:
                 RESERVED = 0b1111,
             };
 
+            // Setters
+            void lpf1_g_bw(Lpf1GBw v) { set_field<0, 5, 3>(v); }
+            void fs_g(FsG v) { set_field<0, 0, 5>(v); }
+
+            // Getters
+            Lpf1GBw lpf1_g_bw() const { return get_field<0, 5, 3, Lpf1GBw>(); }
+            FsG fs_g() const { return get_field<0, 0, 5, FsG>(); }
+
+        private:
+            inline static const char *TAG = "LSM6DSV16X_CTRL6";
             static const char *to_string(Lpf1GBw v);
             static const char *to_string(FsG v);
+    END_REGISTER
 
- // Setters
-    void lpf1_g_bw(Lpf1GBw v)   { raw_ = (raw_ & 0x1F) | (static_cast<uint8_t>(v) << 5); }
-    void fs_g(FsG v)            { raw_ = (raw_ & 0xE0) | (static_cast<uint8_t>(v) & 0x1F); }
+    DEFINE_GENERIC_REGISTER_ADDR(Ctrl7Register, uint8_t, 0x16)
+        public:
+            enum class AhQvarCZin : uint8_t
+            {
+                G2_4 = 0b00, // 2.4 GΩ (default)
+                M730 = 0b01, // 730 MΩ
+                M300 = 0b10, // 300 MΩ
+                M235 = 0b11  // 235 MΩ
+            };
 
-    // Getters
-    Lpf1GBw lpf1_g_bw() const   { return static_cast<Lpf1GBw>((raw_ >> 5) & 0x07); }
-    FsG fs_g() const            { return static_cast<FsG>(raw_ & 0x1F); }
+            // Setters
+            void ah_qvar_en(bool v) { set_flag<0, 7>(v); }
+            void int2_drdy_ah_qvar(bool v) { set_flag<0, 6>(v); }
+            void ah_qvar_c_zin(AhQvarCZin v) { set_field<0, 4, 2>(v); }
+            void lpf1_g_en(bool v) { set_flag<0, 0>(v); }
 
-    // Raw access
-    void set_raw(uint8_t raw)   { raw_ = raw; }
-    uint8_t get_raw() const     { return raw_; }
+            // Getters
+            bool ah_qvar_en() const { return get_flag<0, 7>(); }
+            bool int2_drdy_ah_qvar() const { return get_flag<0, 6>(); }
+            AhQvarCZin ah_qvar_c_zin() const { return get_field<0, 4, 2, AhQvarCZin>(); }
+            bool lpf1_g_en() const { return get_flag<0, 0>(); }
 
-        void log() const;
-        std::string to_json() const;
+        private:
+            inline static const char *TAG = "LSM6DSV16X_CTRL7";
+            static const char *to_string(AhQvarCZin v);
+    END_REGISTER
 
-    private:
-        inline static const char *TAG = "LSM6DSV16X_CTRL6";
-        uint8_t raw_ = 0;
-    };
+    DEFINE_GENERIC_REGISTER_ADDR(Ctrl8Register, uint8_t, 0x17)
+        public:
+            // HP_LPF2_XL_BW_[2:0] : bits 7:5
+            enum class HpLpf2XlBw : uint8_t
+            {
+                ODR_4 = 0b000,
+                ODR_10 = 0b001,
+                ODR_20 = 0b010,
+                ODR_45 = 0b011,
+                ODR_100 = 0b100,
+                ODR_200 = 0b101,
+                ODR_400 = 0b110,
+                ODR_800 = 0b111
+            };
 
-    class Ctrl7Register : protected RegisterBase
-{
-public:
-    static constexpr uint8_t reg_addr = 0x16;
+            // FS_XL_[1:0] : bits 1:0
+            enum class FsXl : uint8_t
+            {
+                G2 = 0b00, // ±2g (default)
+                G4 = 0b01, // ±4g
+                G8 = 0b10, // ±8g
+                G16 = 0b11 // ±16g
+            };
 
-    enum class AhQvarCZin : uint8_t
-    {
-        G2_4 = 0b00, // 2.4 GΩ (default)
-        M730 = 0b01, // 730 MΩ
-        M300 = 0b10, // 300 MΩ
-        M235 = 0b11  // 235 MΩ
-    };
+            // Setters
+            void hp_lpf2_xl_bw(HpLpf2XlBw v) { set_field<0, 5, 3>(v); }
+            void xl_dualc_en(bool v) { set_flag<0, 2>(v); }
+            void fs_xl(FsXl v) { set_field<0, 0, 2>(v); }
 
-    static const char* to_string(AhQvarCZin v);
+            // Getters
+            HpLpf2XlBw hp_lpf2_xl_bw() const { return get_field<0, 5, 3, HpLpf2XlBw>(); }
+            bool xl_dualc_en() const { return get_flag<0, 2>(); }
+            FsXl fs_xl() const { return get_field<0, 0, 2, FsXl>(); }
 
-    // Setters
-    void ah_qvar_en(bool v)         { set_bit(7, v, raw_); }
-    void int2_drdy_ah_qvar(bool v)  { set_bit(6, v, raw_); }
-    void ah_qvar_c_zin(AhQvarCZin v){ raw_ = (raw_ & ~(0x03 << 4)) | (static_cast<uint8_t>(v) << 4); }
-    void lpf1_g_en(bool v)          { set_bit(0, v, raw_); }
+        private:
+            inline static const char *TAG = "LSM6DSV16X_CTRL8";
+            static const char *to_string(HpLpf2XlBw v);
+            static const char *to_string(FsXl v);
 
-    // Getters
-    bool ah_qvar_en() const         { return get_bit(7, raw_); }
-    bool int2_drdy_ah_qvar() const  { return get_bit(6, raw_); }
-    AhQvarCZin ah_qvar_c_zin() const{ return static_cast<AhQvarCZin>((raw_ >> 4) & 0x03, raw_); }
-    bool lpf1_g_en() const          { return get_bit(0, raw_); }
+    END_REGISTER
 
-    // Raw access
-    void set_raw(uint8_t raw)       { raw_ = raw; }
-    uint8_t get_raw() const         { return raw_; }
+    DEFINE_GENERIC_REGISTER_ADDR(Ctrl9Register, uint8_t, 0x18)
+        public:
+            enum class UsrOffW : uint8_t
+            {
+                POW_10 = 0, // 2^-10 g/LSB (default)
+                POW_6 = 1,  // 2^-6 g/LSB
+            };
+            
+            // Setters
+            void hp_ref_mode_xl(bool v) { set_flag<0, 6>(v); }
+            void xl_fastsettl_mode(bool v) { set_flag<0, 5>(v); }
+            void hp_slope_xl_en(bool v) { set_flag<0, 4>(v); }
+            void lpf2_xl_en(bool v) { set_flag<0, 3>(v); }
+            void usr_off_w(UsrOffW v) { set_field<0, 2, 1>(v); }
+            void usr_off_on_out(bool v) { set_flag<0, 1>(v); }
 
-    void log() const;
-    std::string to_json() const;
+            // Getters
+            bool hp_ref_mode_xl() const { return get_flag<0, 6>(); }
+            bool xl_fastsettl_mode() const { return get_flag<0, 5>(); }
+            bool hp_slope_xl_en() const { return get_flag<0, 4>(); }
+            bool lpf2_xl_en() const { return get_flag<0, 3>(); }
+            UsrOffW usr_off_w() const { return get_field<0, 2, 1, UsrOffW>(); }
+            bool usr_off_on_out() const { return get_flag<0, 1>(); }
 
-private:
-    uint8_t raw_ = 0;
-    inline static const char* TAG = "LSM6DSV16X_CTRL7";
-};
+        private:
+            inline static const char *TAG = "LSM6DSV16X_CTRL9";
+            static const char *to_string(UsrOffW v);
 
-    class Ctrl8Register : protected RegisterBase
-{
-public:
-    static constexpr uint8_t reg_addr = 0x17;
+    END_REGISTER
 
-    // HP_LPF2_XL_BW_[2:0] : bits 7:5
-    enum class HpLpf2XlBw : uint8_t
-    {
-        ODR_4   = 0b000,
-        ODR_10  = 0b001,
-        ODR_20  = 0b010,
-        ODR_45  = 0b011,
-        ODR_100 = 0b100,
-        ODR_200 = 0b101,
-        ODR_400 = 0b110,
-        ODR_800 = 0b111
-    };
+    DEFINE_GENERIC_REGISTER_ADDR(Ctrl10Register, uint8_t, 0x19)
+        public:
+            enum class StG : uint8_t
+            {
+                NORMAL = 0b00,
+                POS = 0b01,
+                NEG = 0b10,
+                RESERVED = 0b11
+            };
+            enum class StXl : uint8_t
+            {
+                NORMAL = 0b00,
+                POS = 0b01,
+                NEG = 0b10,
+                RESERVED = 0b11
+            };
 
-    // FS_XL_[1:0] : bits 1:0
-    enum class FsXl : uint8_t
-    {
-        G2  = 0b00, // ±2g (default)
-        G4  = 0b01, // ±4g
-        G8  = 0b10, // ±8g
-        G16 = 0b11  // ±16g
-    };
+            // Setters
+            void emb_func_debug(bool v) { set_flag<0, 5>(v); }
+            void st_g(StG v) { set_field<0, 2, 2>(v); }
+            void st_xl(StXl v) { set_field<0, 0, 2>(v); }
 
-    static const char* to_string(HpLpf2XlBw v);
-    static const char* to_string(FsXl v);
+            // Getters
+            bool emb_func_debug() const { return get_flag<0, 5>(); }
+            StG st_g() const { return get_field<0, 2, 2, StG>(); }
+            StXl st_xl() const { return get_field<0, 0, 2, StXl>(); }
 
-    // Setters
-    void hp_lpf2_xl_bw(HpLpf2XlBw v) { raw_ = (raw_ & 0x1F) | (static_cast<uint8_t>(v) << 5); }
-    void xl_dualc_en(bool v)         { set_bit(2, v, raw_); }
-    void fs_xl(FsXl v)               { raw_ = (raw_ & ~0x03) | (static_cast<uint8_t>(v) & 0x03); }
+        private:
+            inline static const char *TAG = "LSM6DSV16X_CTRL10";
 
-    // Getters
-    HpLpf2XlBw hp_lpf2_xl_bw() const { return static_cast<HpLpf2XlBw>((raw_ >> 5) & 0x07); }
-    bool xl_dualc_en() const         { return get_bit(2, raw_); }
-    FsXl fs_xl() const               { return static_cast<FsXl>(raw_ & 0x03); }
+            static const char *to_string(StG v);
+            static const char *to_string(StXl v);
 
-    // Raw access
-    void set_raw(uint8_t raw)        { raw_ = raw; }
-    uint8_t get_raw() const          { return raw_; }
-
-    void log() const;
-    std::string to_json() const;
-
-private:
-    uint8_t raw_ = 0;
-    inline static const char* TAG = "LSM6DSV16X_CTRL8";
-};
-
-    class Ctrl9Register : protected RegisterBase
-{
-public:
-    static constexpr uint8_t reg_addr = 0x18;
-
-    enum class UsrOffW : uint8_t
-    {
-        POW_10 = 0, // 2^-10 g/LSB (default)
-        POW_6  = 1, // 2^-6 g/LSB
-    };
-
-    static const char* to_string(UsrOffW v);
-
-    // Setters
-    void hp_ref_mode_xl(bool v)     { set_bit(6, v, raw_); }
-    void xl_fastsettl_mode(bool v)  { set_bit(5, v, raw_); }
-    void hp_slope_xl_en(bool v)     { set_bit(4, v, raw_); }
-    void lpf2_xl_en(bool v)         { set_bit(3, v, raw_); }
-    void usr_off_w(UsrOffW v)       { set_bit(2, static_cast<uint8_t>(v) & 0x01, raw_); }
-    void usr_off_on_out(bool v)     { set_bit(1, v, raw_); }
-
-    // Getters
-    bool hp_ref_mode_xl() const     { return get_bit(6, raw_); }
-    bool xl_fastsettl_mode() const  { return get_bit(5, raw_); }
-    bool hp_slope_xl_en() const     { return get_bit(4, raw_); }
-    bool lpf2_xl_en() const         { return get_bit(3, raw_); }
-    UsrOffW usr_off_w() const       { return static_cast<UsrOffW>((raw_ >> 2) & 0x01, raw_); }
-    bool usr_off_on_out() const     { return get_bit(1, raw_); }
-
-    // Raw access
-    void set_raw(uint8_t raw)       { raw_ = raw; }
-    uint8_t get_raw() const         { return raw_; }
-
-    void log() const;
-    std::string to_json() const;
-
-private:
-    uint8_t raw_ = 0;
-    inline static const char* TAG = "LSM6DSV16X_CTRL9";
-};
-
-   class Ctrl10Register : protected RegisterBase
-{
-public:
-    static constexpr uint8_t reg_addr = 0x19;
-
-    enum class StG : uint8_t
-    {
-        NORMAL    = 0b00,
-        POS       = 0b01,
-        NEG       = 0b10,
-        RESERVED  = 0b11
-    };
-    enum class StXl : uint8_t
-    {
-        NORMAL    = 0b00,
-        POS       = 0b01,
-        NEG       = 0b10,
-        RESERVED  = 0b11
-    };
-
-    static const char* to_string(StG v);
-    static const char* to_string(StXl v);
-
-    // Setters
-    void emb_func_debug(bool v)    { set_bit(5, v, raw_); }
-    void st_g(StG v)               { raw_ = (raw_ & ~(0x03 << 2)) | (static_cast<uint8_t>(v) << 2); }
-    void st_xl(StXl v)             { raw_ = (raw_ & ~0x03) | (static_cast<uint8_t>(v) & 0x03); }
-
-    // Getters
-    bool emb_func_debug() const    { return get_bit(5, raw_); }
-    StG st_g() const               { return static_cast<StG>((raw_ >> 2) & 0x03); }
-    StXl st_xl() const             { return static_cast<StXl>(raw_ & 0x03); }
-
-    // Raw access
-    void set_raw(uint8_t raw)      { raw_ = raw; }
-    uint8_t get_raw() const        { return raw_; }
-
-    void log() const;
-    std::string to_json() const;
-
-private:
-    uint8_t raw_ = 0;
-    inline static const char* TAG = "LSM6DSV16X_CTRL10";
-};
+    END_REGISTER
 
 } // namespace lsm6dsv16x

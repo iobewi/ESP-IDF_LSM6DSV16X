@@ -1,4 +1,4 @@
-#include "lsm6dsv16x-ctrl_types.hpp"
+#include "ctrl/lsm6dsv16x-ctrl_types.hpp"
 
 namespace lsm6dsv16x
 {
@@ -69,15 +69,15 @@ namespace lsm6dsv16x
     {
         ESP_LOGI(TAG, "CTRL1: raw=0x%02X odr_xl=%s op_mode_xl=%s",
                  raw_,
-                 to_string(odr_xl),
-                 to_string(op_mode_xl));
+                 to_string(odr_xl()),
+                 to_string(op_mode_xl()));
     }
 
     std::string Ctrl1Register::to_json() const
     {
         return std::string("{") +
-               "\"odr_xl\":\"" + to_string(odr_xl) + "\"," +
-               "\"op_mode_xl\":\"" + to_string(op_mode_xl) + "\"" +
+               "\"odr_xl\":\"" + to_string(odr_xl()) + "\"," +
+               "\"op_mode_xl\":\"" + to_string(op_mode_xl()) + "\"" +
                "}";
     }
 
@@ -143,15 +143,15 @@ namespace lsm6dsv16x
     {
         ESP_LOGI(TAG, "CTRL2: raw=0x%02X odr_g=%s op_mode_g=%s",
                  raw_,
-                 to_string(odr_g),
-                 to_string(op_mode_g));
+                 to_string(odr_g()),
+                 to_string(op_mode_g()));
     }
 
     std::string Ctrl2Register::to_json() const
     {
         return std::string("{") +
-               "\"odr_g\":\"" + to_string(odr_g) + "\"," +
-               "\"op_mode_g\":\"" + to_string(op_mode_g) + "\"" +
+               "\"odr_g\":\"" + to_string(odr_g()) + "\"," +
+               "\"op_mode_g\":\"" + to_string(op_mode_g()) + "\"" +
                "}";
     }
 
@@ -188,7 +188,7 @@ namespace lsm6dsv16x
                "}";
     }
 
-    const char *Ctrl5Register::Values::to_string(BusActSel v)
+    const char *Ctrl5Register::to_string(BusActSel v)
     {
         switch (v)
         {
@@ -219,7 +219,7 @@ namespace lsm6dsv16x
                "}";
     }
 
-    const char *Ctrl6Register::Values::to_string(Lpf1GBw v)
+    const char *Ctrl6Register::to_string(Lpf1GBw v)
     {
         switch (v)
         {
@@ -244,7 +244,7 @@ namespace lsm6dsv16x
         }
     }
 
-    const char *Ctrl6Register::Values::to_string(FsG v)
+    const char *Ctrl6Register::to_string(FsG v)
     {
         switch (v)
         {

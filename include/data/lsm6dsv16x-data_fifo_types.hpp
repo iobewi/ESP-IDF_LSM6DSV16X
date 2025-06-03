@@ -2,18 +2,20 @@
 
 #include <cstdint>
 #include <string>
+#include "esp_log.h"
+
 #include "lsm6dsv16x-register_base.hpp"
 
 namespace lsm6dsv16x
 {
-    class FifoDataOutTagRegister : protected RegisterBase
+    class FifoDataOutTagRegister : public RegisterBase8<FifoDataOutTagRegister>
     {
     public:
         static constexpr uint8_t reg_addr = 0x78;
 
         FifoDataOutTagRegister() = default;
         explicit FifoDataOutTagRegister(uint8_t raw) : raw_(raw) {}
-        
+
         enum class TagSensor : uint8_t
         {
             EMPTY = 0x00,            // FIFO empty
@@ -54,6 +56,44 @@ namespace lsm6dsv16x
         void set_raw(uint8_t raw) { raw_ = raw; }
         uint8_t get_raw() const { return raw_; }
 
+        // Décodage du tag sensor sous forme de string
+        static const char *to_string(TagSensor tag)
+        {
+            switch (tag)
+            {
+            case TagSensor::EMPTY:             return "FIFO empty";
+            case TagSensor::GYRO_NC:           return "Gyroscope NC";
+            case TagSensor::ACCEL_NC:          return "Accelerometer NC";
+            case TagSensor::TEMPERATURE:       return "Temperature";
+            case TagSensor::TIMESTAMP:         return "Timestamp";
+            case TagSensor::CFG_CHANGE:        return "CFG_Change";
+            case TagSensor::ACCEL_NC_T2:       return "Accelerometer NC_T_2";
+            case TagSensor::ACCEL_NC_T1:       return "Accelerometer NC_T_1";
+            case TagSensor::ACCEL_2C:          return "Accelerometer 2xC";
+            case TagSensor::ACCEL_3C:          return "Accelerometer 3xC";
+            case TagSensor::GYRO_NC_T2:        return "Gyroscope NC_T_2";
+            case TagSensor::GYRO_NC_T1:        return "Gyroscope NC_T_1";
+            case TagSensor::GYRO_2C:           return "Gyroscope 2xC";
+            case TagSensor::GYRO_3C:           return "Gyroscope 3xC";
+            case TagSensor::SHUB_SLAVE0:       return "Sensor hub slave 0";
+            case TagSensor::SHUB_SLAVE1:       return "Sensor hub slave 1";
+            case TagSensor::SHUB_SLAVE2:       return "Sensor hub slave 2";
+            case TagSensor::SHUB_SLAVE3:       return "Sensor hub slave 3";
+            case TagSensor::STEP_COUNTER:      return "Step counter";
+            case TagSensor::SFLP_ROT_VEC:      return "SFLP game rotation vector";
+            case TagSensor::SFLP_GYRO_BIAS:    return "SFLP gyroscope bias";
+            case TagSensor::SFLP_GRAVITY_VEC:  return "SFLP gravity vector";
+            case TagSensor::SHUB_NACK:         return "Sensor hub nack";
+            case TagSensor::MLC_RESULT:        return "MLC result";
+            case TagSensor::MLC_FILTER:        return "MLC filter";
+            case TagSensor::MLC_FEATURE:       return "MLC feature";
+            case TagSensor::ACCEL_DUALC:       return "Accelerometer dualC";
+            case TagSensor::EIS_GYRO:          return "Enhanced EIS gyroscope";
+            case TagSensor::UNKNOWN:           return "Unknown";
+            default:                           return "Unrecognized";
+            }
+        }
+
         // Pour affichage/debug
         void log() const
         {
@@ -68,75 +108,11 @@ namespace lsm6dsv16x
                    "}";
         }
 
-        // Décodage du tag sensor sous forme de string
-        static const char *to_string(uint8_t tag)
-        {
-            switch (tag)
-            {
-            case 0x00:
-                return "FIFO empty";
-            case 0x01:
-                return "Gyroscope NC";
-            case 0x02:
-                return "Accelerometer NC";
-            case 0x03:
-                return "Temperature";
-            case 0x04:
-                return "Timestamp";
-            case 0x05:
-                return "CFG_Change";
-            case 0x06:
-                return "Accelerometer NC_T_2";
-            case 0x07:
-                return "Accelerometer NC_T_1";
-            case 0x08:
-                return "Accelerometer 2xC";
-            case 0x09:
-                return "Accelerometer 3xC";
-            case 0x0A:
-                return "Gyroscope NC_T_2";
-            case 0x0B:
-                return "Gyroscope NC_T_1";
-            case 0x0C:
-                return "Gyroscope 2xC";
-            case 0x0D:
-                return "Gyroscope 3xC";
-            case 0x0E:
-                return "Sensor hub slave 0";
-            case 0x0F:
-                return "Sensor hub slave 1";
-            case 0x10:
-                return "Sensor hub slave 2";
-            case 0x11:
-                return "Sensor hub slave 3";
-            case 0x12:
-                return "Step counter";
-            case 0x13:
-                return "SFLP game rotation vector";
-            case 0x16:
-                return "SFLP gyroscope bias";
-            case 0x17:
-                return "SFLP gravity vector";
-            case 0x19:
-                return "Sensor hub nack";
-            case 0x1A:
-                return "MLC result";
-            case 0x1B:
-                return "MLC filter";
-            case 0x1C:
-                return "MLC feature";
-            case 0x1D:
-                return "Accelerometer dualC";
-            case 0x1E:
-                return "Enhanced EIS gyroscope";
-            default:
-                return "Unknown";
-            }
-        }
+    protected:
+        uint8_t raw_ = 0;
 
     private:
         inline static const char *TAG = "LSM6DSV16X_FIFO_TAG";
-        uint8_t raw_ = 0;
     };
 
     // --- FIFO_DATA_OUT_X

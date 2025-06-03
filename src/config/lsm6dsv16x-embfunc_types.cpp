@@ -150,48 +150,19 @@ namespace lsm6dsv16x
                "}";
     }
 
-    void TapCfg0Register::log() const
-    {
-        ESP_LOGI(TAG,
-                 "TAP_CFG0: raw=0x%02X low_pass_on_6d=%d hw_func_mask_xl_settl=%d slope_fds=%d tap_x=%d tap_y=%d tap_z=%d lir=%d",
-                 raw_,
-                 low_pass_on_6d(),
-                 hw_func_mask_xl_settl(),
-                 slope_fds(),
-                 tap_x_en(),
-                 tap_y_en(),
-                 tap_z_en(),
-                 lir());
-    }
+        void InactivityThsRegister::log() const
+        {
+            ESP_LOGI(TAG, "INACTIVITY_THS: raw=0x%02X inact_ths=%u", raw_ & 0x3F, inact_ths());
+        }
 
-    std::string TapCfg0Register::to_json() const
-    {
-        return std::string("{") +
-               "\"low_pass_on_6d\":" + std::to_string(low_pass_on_6d()) + "," +
-               "\"hw_func_mask_xl_settl\":" + std::to_string(hw_func_mask_xl_settl()) + "," +
-               "\"slope_fds\":" + std::to_string(slope_fds()) + "," +
-               "\"tap_x_en\":" + std::to_string(tap_x_en()) + "," +
-               "\"tap_y_en\":" + std::to_string(tap_y_en()) + "," +
-               "\"tap_z_en\":" + std::to_string(tap_z_en()) + "," +
-               "\"lir\":" + std::to_string(lir()) +
-               "}";
-    }
+        std::string InactivityThsRegister::to_json() const
+        {
+            return std::string("{") +
+                   "\"inact_ths\":" + std::to_string(inact_ths()) +
+                   "}";
+        }
 
-    void TapCfg1Register::log() const
-    {
-        ESP_LOGI(TAG, "TAP_CFG1: raw=0x%02X tap_priority=%s tap_ths_x=%u",
-                 raw_, to_string(tap_priority()), tap_ths_x());
-    }
-
-    std::string TapCfg1Register::to_json() const
-    {
-        return std::string("{") +
-               "\"tap_priority\":\"" + to_string(tap_priority()) + "\"," +
-               "\"tap_ths_x\":" + std::to_string(tap_ths_x()) +
-               "}";
-    }
-
-    const char *TapCfg1Register::to_string(TapPriority v)
+        const char *TapCfgRegister::to_string(TapPriority v)
     {
         switch (v)
         {
@@ -216,19 +187,7 @@ namespace lsm6dsv16x
         }
     }
 
-    void TapCfg2Register::log() const
-    {
-        ESP_LOGI(TAG, "TAP_CFG2: raw=0x%02X tap_ths_y=%u", raw_, tap_ths_y());
-    }
-
-    std::string TapCfg2Register::to_json() const
-    {
-        return std::string("{") +
-               "\"tap_ths_y\":" + std::to_string(tap_ths_y()) +
-               "}";
-    }
-
-    static const char *TapThs6DRegister::to_string(SixdThs v)
+        const char *TapCfgRegister::to_string(SixdThs v)
     {
         switch (v)
         {
@@ -245,17 +204,43 @@ namespace lsm6dsv16x
         }
     }
 
-    void TapThs6DRegister::log() const
+    void TapCfgRegister::log() const
     {
-        ESP_LOGI(TAG, "TAP_THS_6D: raw=0x%02X d4d_en=%d sixd_ths=%s tap_ths_z=%d",
-                 raw_, d4d_en(), to_string(sixd_ths()), tap_ths_z());
+        ESP_LOGI(TAG,
+                 "TAP_CFG: low_pass_on_6d=%d hw_func_mask_xl_settl=%d slope_fds=%d tap_x=%d tap_y=%d tap_z=%d lir=%d d4d_en=%d",
+                 low_pass_on_6d(),
+                 hw_func_mask_xl_settl(),
+                 slope_fds(),
+                 tap_x_en(),
+                 tap_y_en(),
+                 tap_z_en(),
+                 lir(), 
+                 d4d_en());
+        ESP_LOGI(TAG, "tap_priority=%s  sixd_ths=%s",
+                 to_string(tap_priority()),
+                 to_string(sixd_ths()));
+
+        ESP_LOGI(TAG, "tap_ths_x=%u tap_ths_y=%u tap_ths_z=%d",
+                 tap_ths_x(), 
+                 tap_ths_y(), 
+                 tap_ths_z());
     }
 
-    std::string TapThs6DRegister::to_json() const
+    std::string TapCfgRegister::to_json() const
     {
         return std::string("{") +
+               "\"low_pass_on_6d\":" + std::to_string(low_pass_on_6d()) + "," +
+               "\"hw_func_mask_xl_settl\":" + std::to_string(hw_func_mask_xl_settl()) + "," +
+               "\"slope_fds\":" + std::to_string(slope_fds()) + "," +
+               "\"tap_x_en\":" + std::to_string(tap_x_en()) + "," +
+               "\"tap_y_en\":" + std::to_string(tap_y_en()) + "," +
+               "\"tap_z_en\":" + std::to_string(tap_z_en()) + "," +
+               "\"lir\":" + std::to_string(lir()) + "," +
+               "\"tap_priority\":\"" + to_string(tap_priority()) + "\"," +
                "\"d4d_en\":" + std::to_string(d4d_en()) + "," +
                "\"sixd_ths\":\"" + to_string(sixd_ths()) + "\"," +
+               "\"tap_ths_x\":" + std::to_string(tap_ths_x()) + "," +
+               "\"tap_ths_y\":" + std::to_string(tap_ths_y()) + "," +
                "\"tap_ths_z\":" + std::to_string(tap_ths_z()) +
                "}";
     }
@@ -309,7 +294,7 @@ namespace lsm6dsv16x
                "}";
     }
 
-    static const char *FreeFallRegister::to_string(FfThs v)
+    const char *FreeFallRegister::to_string(FfThs v)
     {
         switch (v)
         {
@@ -350,7 +335,7 @@ namespace lsm6dsv16x
                "}";
     }
 
-    void Md1CfgRegister::log() const
+    void MdCfgRegister::log() const
     {
         ESP_LOGI(TAG, "MD1_CFG (0x%02X): raw=0x%02X", reg_addr, raw_);
         ESP_LOGI(TAG, "  int1_sleep_change = %d", int1_sleep_change());
@@ -361,25 +346,6 @@ namespace lsm6dsv16x
         ESP_LOGI(TAG, "  int1_6d           = %d", int1_6d());
         ESP_LOGI(TAG, "  int1_emb_func     = %d", int1_emb_func());
         ESP_LOGI(TAG, "  int1_shub         = %d", int1_shub());
-    }
-
-    std::string Md1CfgRegister::to_json() const
-    {
-        return std::string("{") +
-               "\"int1_sleep_change\":" + std::to_string(int1_sleep_change()) + "," +
-               "\"int1_single_tap\":" + std::to_string(int1_single_tap()) + "," +
-               "\"int1_wu\":" + std::to_string(int1_wu()) + "," +
-               "\"int1_ff\":" + std::to_string(int1_ff()) + "," +
-               "\"int1_double_tap\":" + std::to_string(int1_double_tap()) + "," +
-               "\"int1_6d\":" + std::to_string(int1_6d()) + "," +
-               "\"int1_emb_func\":" + std::to_string(int1_emb_func()) + "," +
-               "\"int1_shub\":" + std::to_string(int1_shub()) +
-               "}";
-    }
-
-    void Md2CfgRegister::log() const
-    {
-        ESP_LOGI(TAG, "MD2_CFG (0x%02X): raw=0x%02X", reg_addr, raw_);
         ESP_LOGI(TAG, "  int2_sleep_change = %d", int2_sleep_change());
         ESP_LOGI(TAG, "  int2_single_tap   = %d", int2_single_tap());
         ESP_LOGI(TAG, "  int2_wu           = %d", int2_wu());
@@ -390,9 +356,17 @@ namespace lsm6dsv16x
         ESP_LOGI(TAG, "  int2_timestamp    = %d", int2_timestamp());
     }
 
-    std::string Md2CfgRegister::to_json() const
+    std::string MdCfgRegister::to_json() const
     {
         return std::string("{") +
+               "\"int1_sleep_change\":" + std::to_string(int1_sleep_change()) + "," +
+               "\"int1_single_tap\":" + std::to_string(int1_single_tap()) + "," +
+               "\"int1_wu\":" + std::to_string(int1_wu()) + "," +
+               "\"int1_ff\":" + std::to_string(int1_ff()) + "," +
+               "\"int1_double_tap\":" + std::to_string(int1_double_tap()) + "," +
+               "\"int1_6d\":" + std::to_string(int1_6d()) + "," +
+               "\"int1_emb_func\":" + std::to_string(int1_emb_func()) + "," +
+               "\"int1_shub\":" + std::to_string(int1_shub()) + "," +
                "\"int2_sleep_change\":" + std::to_string(int2_sleep_change()) + "," +
                "\"int2_single_tap\":" + std::to_string(int2_single_tap()) + "," +
                "\"int2_wu\":" + std::to_string(int2_wu()) + "," +
@@ -404,7 +378,7 @@ namespace lsm6dsv16x
                "}";
     }
 
-    static const char *HaodrCfgRegister::to_string(HaodrSel v)
+    const char *HaodrCfgRegister::to_string(HaodrSel v)
     {
         switch (v)
         {

@@ -9,7 +9,7 @@
 namespace lsm6dsv16x
 {
 
-    class OffsetUsrRegister : protected RegisterBase
+    class OffsetUsrRegister : public RegisterBase<OffsetUsrRegister>
     {
     public:
         // Constructeur : adresse du registre
@@ -26,11 +26,11 @@ namespace lsm6dsv16x
 
         uint8_t reg_addr() const { return reg_addr_; }
 
-        void log() const
+        virtual void log() const
         {
             ESP_LOGI("LSM6DSV16X_OFFSET", "raw=0x%02X, offset=%d", raw_, get_offset());
         }
-        std::string to_json() const
+        virtual std::string to_json() const
         {
             return std::string("{") + "\"offset\":" + std::to_string(get_offset()) + "}";
         }
