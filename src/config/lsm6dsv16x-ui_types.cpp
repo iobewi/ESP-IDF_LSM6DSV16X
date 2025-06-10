@@ -15,26 +15,81 @@ std::string UiHandshakeCtrlRegister::to_json() const
             "}";
 }
 
-std::string UiSpi2SharedRegister::to_hex(uint8_t v)
+std::string to_hex(uint8_t v)
 {
     char buf[5];
     snprintf(buf, sizeof(buf), "%02X", v);
     return std::string(buf);
 }
 
-void UiSpi2SharedRegister::log() const
+void UiSpi2Shared0Register::log() const
 {
-    ESP_LOGI(TAG, "reg_addr=0x%02X raw=0x%02X", reg_addr, raw_);
+    ESP_LOGI(TAG, "raw=0x%02X", raw_);
 }
 
-std::string UiSpi2SharedRegister::to_json() const
+std::string UiSpi2Shared0Register::to_json() const
 {
     return std::string("{") +
-            "\"reg_addr\":0x" + to_hex(reg_addr) + "," +
-            "\"raw\":0x" + to_hex(raw_) +
+            "\"raw\":0x" + to_hex(raw_) + 
             "}";
 }
 
+void UiSpi2Shared1Register::log() const
+{
+    ESP_LOGI(TAG, "raw=0x%02X", raw_);
+}
+
+std::string UiSpi2Shared1Register::to_json() const
+{
+    return std::string("{") +
+            "\"raw\":0x" + to_hex(raw_) + 
+            "}";
+}
+void UiSpi2Shared2Register::log() const
+{
+    ESP_LOGI(TAG, "raw=0x%02X", raw_);
+}
+
+std::string UiSpi2Shared2Register::to_json() const
+{
+    return std::string("{") +
+            "\"raw\":0x" + to_hex(raw_) + 
+            "}";
+}
+void UiSpi2Shared3Register::log() const
+{
+    ESP_LOGI(TAG, "raw=0x%02X", raw_);
+}
+
+std::string UiSpi2Shared3Register::to_json() const
+{
+    return std::string("{") +
+            "\"raw\":0x" + to_hex(raw_) + 
+            "}";
+}
+void UiSpi2Shared4Register::log() const
+{
+    ESP_LOGI(TAG, "raw=0x%02X", raw_);
+}
+
+std::string UiSpi2Shared4Register::to_json() const
+{
+    return std::string("{") +
+            "\"raw\":0x" + to_hex(raw_) + 
+            "}";
+}
+
+void UiSpi2Shared5Register::log() const
+{
+    ESP_LOGI(TAG, "raw=0x%02X", raw_);
+}
+
+std::string UiSpi2Shared5Register::to_json() const
+{
+    return std::string("{") +
+            "\"raw\":0x" + to_hex(raw_) + 
+            "}";
+}
 void UiIntOisRegister::log() const
 {
     ESP_LOGI(TAG, "UI_INT_OIS: raw=0x%02X", raw_);

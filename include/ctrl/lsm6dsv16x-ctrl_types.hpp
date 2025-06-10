@@ -117,9 +117,9 @@ namespace lsm6dsv16x
 
         private:
             inline static const char *TAG = "LSM6DSV16X_CTRL3";
-            END_REGISTER
+    END_REGISTER
 
-            DEFINE_GENERIC_REGISTER_ADDR(Ctrl4Register, uint8_t, 0x13)
+    DEFINE_GENERIC_REGISTER_ADDR(Ctrl4Register, uint8_t, 0x13)
         public:
             // Setters
             void int2_on_int1(bool v) { set_flag<0, 4>(v); }

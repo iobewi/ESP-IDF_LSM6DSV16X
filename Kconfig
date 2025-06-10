@@ -1,0 +1,30 @@
+menu "LSM6DSV16X IMU Configuration"
+
+    menu "LSM6DSV16X Sensor Settings"
+    endmenu
+
+    menu "LSM6DSV16X Interrupts"
+
+        config LSM6DSV16X_INT_GPIO
+            int "GPIO number for interrupt"
+            default 12
+
+    endmenu
+
+    menu "LSM6DSV16X I2C Interface"
+
+        config LSM6DSV16X_I2C_ADDRESS
+            hex "I2C address"
+            default 0x6A
+            help
+                LSM6DSV16X default I2C address is 0x6B (SAO to VDD), 0x6A (SAO to GND).
+
+        config LSM6DSV16X_I2C_FREQ_HZ
+            int "I2C Frequency (Hz)"
+            default 100000
+            help
+                100kHz ou 400kHz sont recommandés.
+
+    endmenu
+
+endmenu

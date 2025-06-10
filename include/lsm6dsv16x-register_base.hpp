@@ -18,28 +18,30 @@
     } while (0)
 
 #define DEFINE_GENERIC_REGISTER_ADDR(NAME, RAWTYPE, ADDR)   \
-    class NAME : public RegisterBase<NAME, RAWTYPE> \
-    {                                               \
-        friend class RegisterBase<NAME, RAWTYPE>;   \
-                                                    \
-    protected:                                      \
-        RAWTYPE raw_ = 0;                           \
-                                                    \
-    public:                                         \
-        static constexpr uint8_t reg_addr = ADDR;   \
-        NAME() = default;                           \
-        explicit NAME(RAWTYPE raw) : raw_(raw) {}   \
-        void set_raw(RAWTYPE raw) { raw_ = raw; }   \
-        RAWTYPE get_raw() const { return raw_; }    \
-        void log() const;                           \
-        std::string to_json() const;
+class NAME : public RegisterBase<NAME, RAWTYPE>             \
+{                                                           \
+    friend class RegisterBase<NAME, RAWTYPE>;               \
+                                                            \
+protected:                                                  \
+    RAWTYPE raw_ = 0;                                       \
+                                                            \
+public:                                                     \
+    static constexpr uint8_t reg_addr = ADDR;               \
+    NAME() = default;                                       \
+    explicit NAME(RAWTYPE raw) : raw_(raw) {}               \
+    void set_raw(RAWTYPE raw) { raw_ = raw; }               \
+    RAWTYPE get_raw() const { return raw_; }                \
+    void log() const;                                       \
+    std::string to_json() const;
 
 #define DEFINE_GENERIC_REGISTER_DATA(NAME, ADDR)                    \
 class NAME : public RegisterBase<NAME, uint16_t>                    \
 {                                                                   \
     friend class RegisterBase<NAME, uint16_t>;                      \
+                                                                    \
 protected:                                                          \
     uint16_t raw_ = 0;                                              \
+                                                                    \
 public:                                                             \
     static constexpr uint8_t reg_addr = ADDR;                       \
     NAME() = default;                                               \
@@ -58,7 +60,6 @@ public:                                                             \
 
 namespace lsm6dsv16x
 {
-
     template <typename Derived, typename RawT>
     class RegisterBase
     {
@@ -140,14 +141,5 @@ namespace lsm6dsv16x
             return (reg >> pos) & ((1u << size) - 1u);
         }
     };
-
-    template <typename Derived>
-    using RegisterBase8 = RegisterBase<Derived, uint8_t>;
-
-    template <typename Derived>
-    using RegisterBase16 = RegisterBase<Derived, uint16_t>;
-
-    template <typename Derived>
-    using RegisterBase32 = RegisterBase<Derived, uint32_t>;
 
 } // namespace lsm6dsv16x

@@ -24,61 +24,65 @@ DEFINE_GENERIC_REGISTER_ADDR(UiHandshakeCtrlRegister, uint8_t, 0x64)
 
 END_REGISTER
 
-    class UiSpi2SharedRegister
-    {
+DEFINE_GENERIC_REGISTER_ADDR(UiSpi2Shared0Register, uint8_t, 0x65)
     public:
-        UiSpi2SharedRegister(uint8_t addr) : reg_addr(addr) {}
+        void spi2_shared0(uint8_t raw) { raw_ = raw; }
+        uint8_t spi2_shared0() const { return raw_; }
 
-        void set_raw(uint8_t raw) { raw_ = raw; }
-        uint8_t get_raw() const { return raw_; }
+        private:
+            inline static const char *TAG = "LSM6DSV16X_UI_SPI2_SHARED_0";
 
-        void log() const;
-        std::string to_json() const;
+END_REGISTER
 
-    protected:
-        uint8_t raw_ = 0;
-
-    private:
-        uint8_t reg_addr;
-        static std::string to_hex(uint8_t v);
-        inline static const char *TAG = "LSM6DSV16X_UI_SPI2_SHARED";
-    };
-
-    class UiSpi2Shared0Register : public UiSpi2SharedRegister
-    {
+DEFINE_GENERIC_REGISTER_ADDR(UiSpi2Shared1Register, uint8_t, 0x66)
     public:
-        UiSpi2Shared0Register() : UiSpi2SharedRegister(0x65) {}
-    };
+        void spi2_shared1(uint8_t raw) { raw_ = raw; }
+        uint8_t spi2_shared1() const { return raw_; }
 
-    class UiSpi2Shared1Register : public UiSpi2SharedRegister
-    {
-    public:
-        UiSpi2Shared1Register() : UiSpi2SharedRegister(0x66) {}
-    };
+        private:
+            inline static const char *TAG = "LSM6DSV16X_UI_SPI2_SHARED_1";
 
-    class UiSpi2Shared2Register : public UiSpi2SharedRegister
-    {
-    public:
-        UiSpi2Shared2Register() : UiSpi2SharedRegister(0x67) {}
-    };
+END_REGISTER
 
-    class UiSpi2Shared3Register : public UiSpi2SharedRegister
-    {
+DEFINE_GENERIC_REGISTER_ADDR(UiSpi2Shared2Register, uint8_t, 0x67)
     public:
-        UiSpi2Shared3Register() : UiSpi2SharedRegister(0x68) {}
-    };
+        void spi2_shared2(uint8_t raw) { raw_ = raw; }
+        uint8_t spi2_shared2() const { return raw_; }
 
-    class UiSpi2Shared4Register : public UiSpi2SharedRegister
-    {
-    public:
-        UiSpi2Shared4Register() : UiSpi2SharedRegister(0x69) {}
-    };
+        private:
+            inline static const char *TAG = "LSM6DSV16X_UI_SPI2_SHARED_2";
 
-    class UiSpi2Shared5Register : public UiSpi2SharedRegister
-    {
+END_REGISTER
+
+DEFINE_GENERIC_REGISTER_ADDR(UiSpi2Shared3Register, uint8_t, 0x68)
     public:
-        UiSpi2Shared5Register() : UiSpi2SharedRegister(0x6A) {}
-    };
+        void spi2_shared3(uint8_t raw) { raw_ = raw; }
+        uint8_t spi2_shared3() const { return raw_; }
+
+        private:
+            inline static const char *TAG = "LSM6DSV16X_UI_SPI2_SHARED_3";
+
+END_REGISTER
+
+DEFINE_GENERIC_REGISTER_ADDR(UiSpi2Shared4Register, uint8_t, 0x69)
+    public:
+        void spi2_shared4(uint8_t raw) { raw_ = raw; }
+        uint8_t spi2_shared4() const { return raw_; }
+
+        private:
+            inline static const char *TAG = "LSM6DSV16X_UI_SPI2_SHARED_4";
+
+END_REGISTER
+
+DEFINE_GENERIC_REGISTER_ADDR(UiSpi2Shared5Register, uint8_t, 0x6A)
+    public:
+        void spi2_shared5(uint8_t raw) { raw_ = raw; }
+        uint8_t spi2_shared5() const { return raw_; }
+
+        private:
+            inline static const char *TAG = "LSM6DSV16X_UI_SPI2_SHARED_5";
+
+END_REGISTER
 
 DEFINE_GENERIC_REGISTER_ADDR(UiIntOisRegister, uint8_t, 0x6F)
     public:

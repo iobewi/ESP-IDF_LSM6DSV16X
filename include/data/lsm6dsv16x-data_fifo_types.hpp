@@ -8,13 +8,19 @@
 
 namespace lsm6dsv16x
 {
-    class FifoDataOutTagRegister : public RegisterBase8<FifoDataOutTagRegister>
+    class FifoDataOutTagRegister : public RegisterBase<FifoDataOutTagRegister, uint8_t>
     {
-    public:
+    friend class RegisterBase<FifoDataOutTagRegister, uint8_t>;
+    protected:
+        uint8_t raw_ = 0;
+    public:    
         static constexpr uint8_t reg_addr = 0x78;
 
         FifoDataOutTagRegister() = default;
         explicit FifoDataOutTagRegister(uint8_t raw) : raw_(raw) {}
+
+        void set_raw(uint8_t raw) { raw_ = raw; }
+        uint8_t get_raw() const { return raw_; }
 
         enum class TagSensor : uint8_t
         {
@@ -52,9 +58,6 @@ namespace lsm6dsv16x
         // Champs utiles
         TagSensor tag_sensor() const { return get_field<0, 0, 5, TagSensor>(); }
         uint8_t tag_cnt() const { return get_field<0, 5, 2, uint8_t>(); }
-
-        void set_raw(uint8_t raw) { raw_ = raw; }
-        uint8_t get_raw() const { return raw_; }
 
         // Décodage du tag sensor sous forme de string
         static const char *to_string(TagSensor tag)
@@ -107,43 +110,28 @@ namespace lsm6dsv16x
                    "\"tag_cnt\": " + std::to_string(tag_cnt()) +
                    "}";
         }
-
-    protected:
-        uint8_t raw_ = 0;
-
+        
     private:
         inline static const char *TAG = "LSM6DSV16X_FIFO_TAG";
     };
 
-    // --- FIFO_DATA_OUT_X
-    struct FifoOutXRegister : public OutData16Register
-    {
-        FifoOutXRegister() : OutData16Register(0x79) {}
-        inline static const char *TAG = "LSM6DSV16X_FIFO_OUT_X";
-        void log() const override
-        {
-            ESP_LOGI(TAG, "FIFO_OUT_X = %d", data());
-        }
-    };
+DEFINE_GENERIC_REGISTER_DATA(FifoOutXRegister, 0x79)
+    int16_t fifo_out_x() const { return static_cast<int16_t>(raw_); } 
+    private:
+        inline static const char *TAG = "LSM6DSV16X-FIFO_OUT_X";
+END_REGISTER
 
-    // --- FIFO_DATA_OUT_Y
-    struct FifoOutYRegister : public OutData16Register
-    {
-        FifoOutYRegister() : OutData16Register(0x7B) {}
-        inline static const char *TAG = "LSM6DSV16X_FIFO_OUT_Y";
-        void log() const override
-        {
-            ESP_LOGI(TAG, "FIFO_OUT_Y = %d", data());
-        }
-    };
-    // --- FIFO_DATA_OUT_Z
-    struct FifoOutZRegister : public OutData16Register
-    {
-        FifoOutZRegister() : OutData16Register(0x7D) {}
-        inline static const char *TAG = "LSM6DSV16X_FIFO_OUT_Z";
-        void log() const override
-        {
-            ESP_LOGI(TAG, "FIFO_OUT_Z = %d", data());
-        }
-    };
+DEFINE_GENERIC_REGISTER_DATA(FifoOutYRegister, 0x7B)
+    int16_t fifo_out_y() const { return static_cast<int16_t>(raw_); } 
+    private:
+        inline static const char *TAG = "LSM6DSV16X-FIFO_OUT_Y";
+END_REGISTER
+
+DEFINE_GENERIC_REGISTER_DATA(FifoOutZRegister, 0x7D)
+    int16_t fifo_out_z() const { return static_cast<int16_t>(raw_); } 
+    private:
+        inline static const char *TAG = "LSM6DSV16X-FIFO_OUT_Z";
+END_REGISTER
+
+
 }

@@ -60,25 +60,25 @@ namespace lsm6dsv16x
         ESP_LOGI(TAG,
                  "ALL_INT_SRC: raw=0x%02X emb_func_ia=%d shub_ia=%d sleep_change_ia=%d d6d_ia=%d tap_ia=%d wu_ia=%d ff_ia=%d",
                  raw_,
-                 emb_func_ia(),
-                 shub_ia(),
-                 sleep_change_ia(),
-                 d6d_ia(),
-                 tap_ia(),
-                 wu_ia(),
-                 ff_ia());
+                 int_emb_func_ia(),
+                 int_shub_ia(),
+                 int_sleep_change_ia(),
+                 int_d6d_ia(),
+                 int_tap_ia(),
+                 int_wu_ia(),
+                 int_ff_ia());
     }
 
     std::string AllIntSrcRegister::to_json() const
     {
         return std::string("{") +
-               "\"emb_func_ia\":" + std::to_string(emb_func_ia()) + "," +
-               "\"shub_ia\":" + std::to_string(shub_ia()) + "," +
-               "\"sleep_change_ia\":" + std::to_string(sleep_change_ia()) + "," +
-               "\"d6d_ia\":" + std::to_string(d6d_ia()) + "," +
-               "\"tap_ia\":" + std::to_string(tap_ia()) + "," +
-               "\"wu_ia\":" + std::to_string(wu_ia()) + "," +
-               "\"ff_ia\":" + std::to_string(ff_ia()) +
+               "\"emb_func_ia\":" + std::to_string(int_emb_func_ia()) + "," +
+               "\"shub_ia\":" + std::to_string(int_shub_ia()) + "," +
+               "\"sleep_change_ia\":" + std::to_string(int_sleep_change_ia()) + "," +
+               "\"d6d_ia\":" + std::to_string(int_d6d_ia()) + "," +
+               "\"tap_ia\":" + std::to_string(int_tap_ia()) + "," +
+               "\"wu_ia\":" + std::to_string(int_wu_ia()) + "," +
+               "\"ff_ia\":" + std::to_string(int_ff_ia()) +
                "}";
     }
 

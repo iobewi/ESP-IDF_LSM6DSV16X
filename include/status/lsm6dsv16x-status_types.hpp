@@ -43,14 +43,14 @@ namespace lsm6dsv16x
 
     DEFINE_GENERIC_REGISTER_ADDR(AllIntSrcRegister, uint8_t, 0x1D)
         public:
-            bool emb_func_ia() const { return get_bit(7, raw_); }
-            bool shub_ia() const { return get_bit(6, raw_); }
-            bool sleep_change_ia() const { return get_bit(5, raw_); }
-            bool d6d_ia() const { return get_bit(4, raw_); }
+            bool int_emb_func_ia() const { return get_bit(7, raw_); }
+            bool int_shub_ia() const { return get_bit(6, raw_); }
+            bool int_sleep_change_ia() const { return get_bit(5, raw_); }
+            bool int_d6d_ia() const { return get_bit(4, raw_); }
             // Bit 3 réservé (toujours à 0)
-            bool tap_ia() const { return get_bit(2, raw_); }
-            bool wu_ia() const { return get_bit(1, raw_); }
-            bool ff_ia() const { return get_bit(0, raw_); }
+            bool int_tap_ia() const { return get_bit(2, raw_); }
+            bool int_wu_ia() const { return get_bit(1, raw_); }
+            bool int_ff_ia() const { return get_bit(0, raw_); }
 
         private:
             inline static const char *TAG = "LSM6DSV16X_ALL_INT_SRC";

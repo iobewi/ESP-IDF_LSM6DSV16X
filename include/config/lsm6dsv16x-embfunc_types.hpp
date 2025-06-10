@@ -177,7 +177,7 @@ namespace lsm6dsv16x
         void tap_ths_y(uint8_t ths) { set_field<2, 0, 5>(ths); }
 
         void d4d_en(bool v) { set_flag<3, 7>(v); }
-        void sixd_ths(uint8_t v) { set_field<3, 5, 2>(v); }
+        void sixd_ths(SixdThs v) { set_field<3, 5, 2>(v); }
         void tap_ths_z(uint8_t val) { set_field<3, 0, 5>(val); }
 
         // Getters
